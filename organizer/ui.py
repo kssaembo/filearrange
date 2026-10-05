@@ -772,7 +772,7 @@ def main():
     ''')
     lock = QLockFile(str(data_dir() / 'app.lock'))
     lock.setStaleLockTime(0)
-    if not lock.tryLock():
+    if not lock.tryLock(0):
         QMessageBox.warning(None, '이미 실행 중', '파일 정리 도우미가 이미 실행 중입니다.')
         return 1
     window = MainWindow()
