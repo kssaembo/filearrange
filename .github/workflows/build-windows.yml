@@ -24,9 +24,16 @@ jobs:
         run: python -m pip install -r requirements-build.txt
 
       - name: Run tests
-        run: python -m unittest discover -s tests -v
+        shell: pwsh
         env:
           QT_QPA_PLATFORM: offscreen
+          PYTHONUTF8: '1'
+        run: |
+          $testTemp = Join-Path $env:GITHUB_WORKSPACE "_test_temp"
+          New-Item -ItemType Directory -Force -Path $testTemp | Out-Null
+          $env:TEMP = $testTemp
+          $env:TMP = $testTemp
+          python -m unittest discover -s tests -v
 
       - name: Build EXE
         run: python -m PyInstaller --noconfirm --clean SafeFileOrganizer.spec
